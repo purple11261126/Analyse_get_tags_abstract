@@ -1,7 +1,7 @@
 #!/usr/bin/env pytho
 # encoding: utf-8
 '''
-Created on 2017年4月5日
+Created on 2017年4月10日
 
 @author: wangcong
 
@@ -20,6 +20,7 @@ from tags_abstract import get_tags, get_abstract
 import csv
 import numpy as np
 import pandas as pd
+
 
 
 def format_content(content):
@@ -122,13 +123,17 @@ def merge_csv_numpy():
                                     delimiter=',', 
                                     skiprows=1, 
                                     usecols=csv_title_index_lst)                                #根据下标取得内容
-            csv_data_lst.append(data_array)                                                     #所有内容添加到数组中
-            
-        except IndexError as index_error:
+            if (data_array[0] == '') or (data_array[1] == ''):  #有些csv内容是空的，这里做一下过滤，不过错误日志并没有写入这里的信息，而是正常记录了异常，为什么？？
+                with open('./error_merge.txt', 'a') as log_file:
+                    log_file.write(csv_name + '：内容为空' + '\n' + '\n')
+                continue
+            else:
+                csv_data_lst.append(data_array)                                                 #所有内容添加到数组中
+        except IndexError as error:
             #有些csv文件会莫名其妙的报出索引超出，可是打开看一下，并没发现什么问题。
             with open('./error_merge.txt', 'a') as log_file:
-                log_file.write(csv_name + ': ' + str(index_error) + '\n' +'\n')
-                print str(index_error)
+                log_file.write(csv_name + ': ' + str(error) + '\n' +'\n')
+                print str(error)
             continue
             
     with open((merge_path + '/00merge.csv'), 'wb') as f:
@@ -187,15 +192,10 @@ def main():
             #写入文件
             save_csv(title, text, tags, abstract)
             
-        except IOError as io_error:
+        except (IOError, IndexError)  as error:
             #有些文件名包含违规符号，产生读取错误，由于原文件Python根本无法读取，所以也无法操作 （但是手动可以操作，眼上去和正常文件一样，但包含的转义字符里有违规字符）目前只能跳过。
-            save_error(io_error)
+            save_error(error)
             continue
-        except IndexError as index_error:
-            save_error(index_error)
-            continue
-        
-        
     
 
 if __name__ == '__main__':
