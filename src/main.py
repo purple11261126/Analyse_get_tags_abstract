@@ -141,18 +141,6 @@ def merge_csv_numpy():
         writer = csv.writer(f)
         writer.writerow(csv_title_lst)
         writer.writerows(csv_data_lst)
-    
-        
-def merge_csv_pandas():
-    '''
-    合并csv文档（pandas）
-    '''
-    merge_path = 'E:/content/03_merge'
-    csv_name_lst = os.listdir(merge_path)
-    use_title = ['post_title', 'post_content', 'post_keywords', 'post_excerpt', 'post_source']
-    for csv_name in csv_name_lst:
-        csv_path = os.path.join(merge_path, csv_name)
-        df = pd.read_csv(csv_path, usecols=use_title)
 
 
 def save_error(error):
