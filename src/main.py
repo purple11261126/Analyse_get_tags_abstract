@@ -19,7 +19,6 @@ import os
 from tags_abstract import get_tags, get_abstract
 import csv
 import numpy as np
-import pandas as pd
 
 
 
@@ -43,7 +42,7 @@ def no_file_name(content):
     '''
     no_title_lst = ['<', '>', ':', '"', '/', '\\', '|', '?', '*']
     for no_title in no_title_lst:
-         content = content.replace(no_title, '')
+        content = content.replace(no_title, '')
     return content
     
 
