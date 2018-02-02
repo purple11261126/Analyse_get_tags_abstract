@@ -1,4 +1,4 @@
-#!/usr/bin/env pytho
+#!/usr/bin/env python
 # encoding: utf-8
 '''
 Created on 2017年4月10日
